@@ -16,17 +16,19 @@
       grid-template-columns: repeat(2, 1fr);
     }
   }
-  
 </style>
 
 <section>
   {#each meetups as meetup, i (meetup.id)}
     <MeetupItem
+      id={meetup.id}
       title={meetup.title}
       subtitle={meetup.subtitle}
       imageUrl={meetup.imageUrl}
       description={meetup.description}
       address={meetup.address}
-      contactEmail={meetup.contactEmail} />
+      contactEmail={meetup.contactEmail}
+      isFavorite={meetup.isFavorite}
+      on:togglefavorite />
   {/each}
 </section>

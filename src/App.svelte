@@ -21,7 +21,8 @@
       imageUrl:
         "https://cdn.workfrom.co/files/usermedia/85809-R2A1IRvER7y3IhPeURj1-IMG_7800.JPG",
       address: "Golden Mille, Medellin",
-      contactEmail: "code@test.com"
+      contactEmail: "code@test.com",
+      isFavorite: true
     },
     {
       id: "m2",
@@ -32,7 +33,8 @@
       imageUrl:
         "https://upload.wikimedia.org/wikipedia/commons/3/3c/Wikimedia_Australia_meetup_Melbourne.jpg",
       address: "Melbourne Park, Australia",
-      contactEmail: "eat@test.com"
+      contactEmail: "eat@test.com",
+      isFavorite: true
     }
   ];
 
@@ -47,6 +49,18 @@
       contactEmail
     };
     meetups = meetups.concat(newMeetup);
+  }
+
+  function toggleFavorite(event) {
+    const id = event.detail;
+    console.log("ID: ", id);
+
+    const updatedMeetup = { ...meetups.find(m => m.id === id) };
+    updatedMeetup.isFavorite = !updatedMeetup.isFavorite;
+    const meetupIndex = meetups.findIndex(m => m.id === id);
+    const updatedMeetups = [...meetups];
+    updatedMeetups[meetupIndex] = updatedMeetup;
+    meetups = updatedMeetups;
   }
 </script>
 
@@ -66,44 +80,30 @@
 <main id="meetups">
   <form on:submit|preventDefault={addMeetup}>
     <TextInput
-      controlType="text"
       id="title"
       label="Title"
       value={title}
-      rows="null"
-      type="text"
       on:input={event => (title = event.target.value)} />
     <TextInput
-      controlType="text"
       id="subtitle"
       label="Subtitle"
       value={subtitle}
-      rows="null"
-      type="text"
       on:input={event => (subtitle = event.target.value)} />
     <TextInput
-      controlType="text"
       id="address"
       label="Address"
       value={address}
-      rows="null"
-      type="text"
       on:input={event => (address = event.target.value)} />
     <TextInput
-      controlType="text"
       id="imageUrl"
       label="Image Url"
       value={imageUrl}
-      rows="null"
-      type="text"
       on:input={event => (imageUrl = event.target.value)} />
     <TextInput
-      controlType="text"
       id="contactEmail"
       label="Contact Email"
       value={contactEmail}
-      rows="null"
-      type="text"
+      type="email"
       on:input={event => (contactEmail = event.target.value)} />
     <TextInput
       controlType="textarea"
@@ -111,9 +111,9 @@
       label="Description"
       value={description}
       rows="3"
-      type="null"
+      type="text"
       on:input={event => (description = event.target.value)} />
-    <Button type="submit" caption="Save" href="" mode="" />
+    <Button type="submit" caption="Save" />
   </form>
-  <MeetupGrid {meetups} />
+  <MeetupGrid {meetups} on:togglefavorite={toggleFavorite} />
 </main>
